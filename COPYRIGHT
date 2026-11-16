@@ -1,0 +1,28 @@
+Blender-AnimeHairSupporter (Blender 5.2 port)
+
+Copyright (C) 2017 saidenka
+Copyright (C) 2019 relarar
+Copyright (C) 2019-2021 Taremin and contributors
+Copyright (C) 2026 Azlle
+
+This fork as a whole is distributed under the GNU General Public License
+v3.0 or later (GPL-3.0-or-later). See LICENSE for the full text.
+
+The code it is based on (https://github.com/relarar/Blender-AnimeHairSupporter
+and https://github.com/Taremin/Blender-AnimeHairSupporter) was released under
+the Apache License 2.0. Those terms remain in effect, and the full text is
+included as LICENSE-APACHE-2.0.
+
+Why GPL-3.0-or-later:
+- The Blender Foundation's position is that add-ons using the Blender Python
+  API should be GPL-compatible. Blender itself is GPL-2.0-or-later.
+- Apache-2.0 is compatible with GPLv3 but not with GPLv2 (per the FSF), so a
+  combined work containing Apache-2.0 code can only be distributed under
+  GPLv3 or later.
+- The Blender Extensions Platform requires add-ons to be licensed under
+  GPL-3.0-or-later.
+
+Notice of modification (Apache-2.0, Section 4(b)):
+In 2026, Azlle modified this code for Blender 5.2 compatibility. Each modified
+file says so in its header. The individual changes are recorded in the git
+history.

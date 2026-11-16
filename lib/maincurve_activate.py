@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Originally licensed under Apache-2.0: Copyright (C) 2017-2021 saidenka, relarar, Taremin and contributors
+# Modified by Azlle in 2026 for Blender 5.2 compatibility. See COPYRIGHT for details.
 import bpy
 import mathutils
 from . import _common
@@ -37,7 +40,7 @@ class ahs_maincurve_activate(bpy.types.Operator):
         def get_center(ob):
             total_co = mathutils.Vector()
             for seq in ob.bound_box:
-                total_co += ob.matrix_world * mathutils.Vector((seq[0], seq[1], seq[2]))
+                total_co += ob.matrix_world @ mathutils.Vector((seq[0], seq[1], seq[2]))
             return total_co / 8
 
         nearest_length = 9**9

@@ -1,0 +1,32 @@
+schema_version = "1.0.0"
+
+id = "anime_hair_supporter"
+version = "26.11.0"
+name = "Anime Hair Supporter"
+tagline = "Tools for modeling anime-style hair with curves"
+maintainer = "Azlle"
+type = "add-on"
+
+website = "https://github.com/azlle/Blender-AnimeHairSupporter"
+tags = ["Modeling", "Mesh"]
+
+blender_version_min = "5.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = [
+  "2017 saidenka",
+  "2019 relarar",
+  "2019-2021 Taremin and contributors",
+  "2026 Azlle",
+]
+
+[build]
+paths_exclude_pattern = [
+  "__pycache__/",
+  "/.git/",
+  "/.gitignore",
+  "*.zip",
+  "README.md",
+  "README.org",
+  "SS.jpg",
+]

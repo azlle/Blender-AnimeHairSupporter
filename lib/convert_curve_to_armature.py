@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Originally licensed under Apache-2.0: Copyright (C) 2017-2021 saidenka, relarar, Taremin and contributors
+# Modified by Azlle in 2026 for Blender 5.2 compatibility. See COPYRIGHT for details.
 import bpy
 import mathutils
 from . import _common
@@ -52,10 +55,10 @@ class OBJECT_OP_ahs_convert_curve_to_armature(bpy.types.Operator):
             total_curve_point_length = sum(curve_point_lengths)
             curve_point_ratios = [l / total_curve_point_length for l in curve_point_lengths]
 
-            temp_me = ob.to_mesh(context.scene, False, 'PREVIEW') if _common.IS_LEGACY else ob.to_mesh(preserve_all_data_layers=False, depsgraph=context.evaluated_depsgraph_get())
-
-            ob.data = pre_curve
-            context.blend_data.curves.remove(temp_curve, do_unlink=True)
+            depsgraph = context.evaluated_depsgraph_get()
+            depsgraph.update()
+            ob_eval = ob.evaluated_get(depsgraph)
+            temp_me = ob_eval.to_mesh()
 
             vert_cos = [_common.mul(ob.matrix_world, v.co) for v in temp_me.vertices]
             vert_lengths = [0]
@@ -91,10 +94,10 @@ class OBJECT_OP_ahs_convert_curve_to_armature(bpy.types.Operator):
 
                 current_length += raw_bone_length
 
-            if _common.IS_LEGACY:
-                context.blend_data.meshes.remove(temp_me, do_unlink=True)
-            else:
-                ob.to_mesh_clear()
+            ob_eval.to_mesh_clear()
+
+            ob.data = pre_curve
+            context.blend_data.curves.remove(temp_curve, do_unlink=True)
 
             bone_points.append(local_bone_points)
 
@@ -104,12 +107,8 @@ class OBJECT_OP_ahs_convert_curve_to_armature(bpy.types.Operator):
         _common.link_to_scene(new_ob)
         _common.select(new_ob, True)
         _common.set_active_object(new_ob)
-        if _common.IS_LEGACY:
-            new_ob.show_x_ray = True
-            new_arm.draw_type = 'STICK'
-        else:
-            new_ob.show_in_front = True
-            new_arm.display_type = 'STICK'
+        new_ob.show_in_front = True
+        new_arm.display_type = 'STICK'
 
         bpy.ops.object.mode_set(mode='EDIT')
 

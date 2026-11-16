@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Originally licensed under Apache-2.0: Copyright (C) 2017-2021 saidenka, relarar, Taremin and contributors
+# Modified by Azlle in 2026 for Blender 5.2 compatibility. See COPYRIGHT for details.
 import bpy
 import bmesh
 import mathutils
@@ -29,7 +32,7 @@ class ahs_convert_curve_to_mesh(bpy.types.Operator):
 
     def execute(self, context):
         # メッシュ選択モードを一時的に頂点モードに
-        pre_mesh_select_mode = context.tool_settings.mesh_select_mode
+        pre_mesh_select_mode = tuple(context.tool_settings.mesh_select_mode)
         context.tool_settings.mesh_select_mode = (True, False, False)
 
         # 変換するカーブを抽出
@@ -78,7 +81,7 @@ class ahs_convert_curve_to_mesh(bpy.types.Operator):
             center_face.loops[1].edge.select_set(True)
 
             # 辺ループ選択
-            bpy.ops.mesh.loop_multi_select(ring=False)
+            bpy.ops.mesh.select_edge_loop_multi()
 
             # 対象の断面の頂点/辺を保管
             selected_verts = [v for v in bm.verts if v.select]
@@ -95,8 +98,10 @@ class ahs_convert_curve_to_mesh(bpy.types.Operator):
             min_verts_distance, max_verts_distance = min(verts_distance), max(verts_distance)
             min_verts_density, max_verts_density = min(verts_density), max(verts_density)
             for vert, distance, density in zip(selected_verts, verts_distance, verts_density):
-                distance_score = (distance - min_verts_distance) / (max_verts_distance - min_verts_distance)
-                density_score = (density - min_verts_density) / (max_verts_density - min_verts_density)
+                distance_range = max_verts_distance - min_verts_distance
+                density_range = max_verts_density - min_verts_density
+                distance_score = (distance - min_verts_distance) / distance_range if distance_range else 0.0
+                density_score = (density - min_verts_density) / density_range if density_range else 0.0
                 score = ((1 - distance_score) * 0.5) + ((1 - density_score) * 0.5)
                 if best_score < score:
                     best_vert, best_score = vert, score
@@ -105,7 +110,7 @@ class ahs_convert_curve_to_mesh(bpy.types.Operator):
             for edge in best_vert.link_edges:
                 if edge not in selected_edges:
                     edge.select_set(True)
-            bpy.ops.mesh.loop_multi_select(ring=False)
+            bpy.ops.mesh.select_edge_loop_multi()
             bpy.ops.mesh.mark_seam(clear=False)
 
             # 重複頂点を削除

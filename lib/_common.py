@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Originally licensed under Apache-2.0: Copyright (C) 2017-2021 saidenka, relarar, Taremin and contributors
+# Modified by Azlle in 2026 for Blender 5.2 compatibility. See COPYRIGHT for details.
 import bpy
 import os
 import math
@@ -31,14 +34,14 @@ def get_bevel_enum_items():
         ('Sphere', "円", "", 'MESH_CIRCLE'),
         ('2', "2本", "", 'OUTLINER_OB_META'),
         ('3', "3本", "", 'COLLAPSEMENU'),
-        ('Triangle', "三角", "", 'EDITMODE_VEC_HLT'),
+        ('Triangle', "三角", "", 'MARKER'),
         ('TriangleLoose', "ゆるやか三角", "", 'PLAY_REVERSE'),
         ('Square', "四角", "", 'MESH_PLANE'),
         ('SquareLoose', "ゆるやか四角", "", 'LATTICE_DATA'),
-        ('Diamond', "ひし形", "", 'SPACE3'),
+        ('Diamond', "ひし形", "", 'KEYFRAME'),
         ('DiamondLoose', "ゆるやかひし形", "", 'KEYTYPE_EXTREME_VEC'),
         ('Sharp', "シャープ", "", 'LINCURVE'),
-        ('Leaf', "葉っぱ", "", 'MAN_ROT'),
+        ('Leaf', "葉っぱ", "", 'ORIENTATION_GIMBAL'),
         ('V', "切り込み", "", 'FILE_TICK'),
         ('Tilde', "波", "", 'IPO_EASE_IN_OUT'),
         ('Step', "段差", "", 'IPO_CONSTANT'),
@@ -74,74 +77,46 @@ def relocation_taper_and_bevel(main_ob, sub_ob, is_taper):
             else:
                 sub_ob.rotation_quaternion = mul(sub_ob.rotation_quaternion, mathutils.Quaternion((0, 0, 1), rotation_z - math.radians(90)))
 
-IS_LEGACY = (bpy.app.version < (2, 80, 0))
+
+# Blender 2.8 以降の API のみサポート (2.7x 互換分岐は削除)
+# bpy.context.window は状況によって None になるため context.view_layer を使う
 
 
 def select(obj, value):
-    if IS_LEGACY:
-        obj.select = value
-    else:
-        obj.select_set(value)
+    obj.select_set(value)
 
 
 def get_scene_objects():
-    if IS_LEGACY:
-        return bpy.context.scene.objects
-    else:
-        return bpy.context.window.view_layer.objects
+    return bpy.context.view_layer.objects
 
 
 def set_active_object(obj):
-    if IS_LEGACY:
-        bpy.context.scene.objects.active = obj
-    else:
-        bpy.context.window.view_layer.objects.active = obj
+    bpy.context.view_layer.objects.active = obj
 
 
 def get_active_object():
-    if IS_LEGACY:
-        return bpy.context.scene.objects.active
-    else:
-        return bpy.context.window.view_layer.objects.active
+    return bpy.context.view_layer.objects.active
 
 
 def is_hide(obj):
-    if IS_LEGACY:
-        return obj.hide
-    else:
-        return obj.hide_viewport
+    return obj.hide_viewport
 
 
 def set_hide(obj, value):
-    if IS_LEGACY:
-        obj.hide = value
-    else:
-        obj.hide_viewport = value
+    obj.hide_viewport = value
 
 
 def link_to_scene(obj):
-    if IS_LEGACY:
-        bpy.context.scene.objects.link(obj)
-    else:
-        bpy.context.scene.collection.objects.link(obj)
+    bpy.context.scene.collection.objects.link(obj)
 
 
 def region():
-    if IS_LEGACY:
-        return 'TOOLS'
-    else:
-        return 'UI'
+    return 'UI'
 
 
 def box_split(box, factor, align):
-    if IS_LEGACY:
-        return box.split(percentage=factor, align=align)
-    else:
-        return box.split(factor=factor, align=align)
+    return box.split(factor=factor, align=align)
 
 
 def mul(a, b):
-    if IS_LEGACY:
-        return a * b
-    else:
-        return a @ b
+    return a @ b

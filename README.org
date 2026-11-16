@@ -1,0 +1,24 @@
+#+TITLE: Blender-AnimeHairSupporter
+#+AUTHOR: Azlle
+#+OPTIONS: toc:nil
+
+* はじめに
+- あたいは現状、Pythonのスキルを持ち得ません。あたいの意思によってClaudeによるCodingが行われますが、ここに明記します。
+- このForkは、[[https://github.com/Taremin/Blender-AnimeHairSupporter][Taremin氏によるFork]]から、あたいが使うバージョン(このREADME.orgを記述中の今なら5.2.x)へのシンプルなPortを指針とします。
+  - また、当該バージョンで使用中に遭遇したバグ修正に関しても、このForkが扱うものです。
+- 原則、Branchによってバージョンごとに管理され、masterは最新です。TagによってReleasesを追うことも出来るでしょう。
+
+* Licenseに関して
+- [[https://github.com/relarar/Blender-AnimeHairSupporter][偉大なオリジナル]](そして[[https://github.com/Taremin/Blender-AnimeHairSupporter][Taremin氏によるFork]])はApache-2.0ですが、Blender Python APIの都合上、このForkはGPL-3.0-or-laterで運用されます。
+- GPL-3.0-or-laterである場合、Apache-2.0と両立が叶います。Apache-2.0は[[file:LICENSE-APACHE-2.0][LICENSE-APACHE-2.0]]に、詳細は[[file:COPYRIGHT][COPYRIGHT]]に示す通りです。
+
+* オリジナルのREADME.md(org化されています)
+[[https://github.com/dskjal/Blender-AnimeHairSupporter][バグ修正とBlender2.79対応版はこちら]]\\
+[[https://github.com/Taremin/Blender-AnimeHairSupporter][Blender2.8対応版はこちら]]
+
+ポリゴン数について：@@html:<br>@@
+これでリアルタイム3D(ゲーム用など)に持ち込む髪を製作するとポリゴン数がとんでもないことになります。@@html:<br>@@
+このアドオンはBlender標準のカーブ機能を使っており、カーブには解像度(分割数)が設定されています、それを見た目が許容できるまで下げてみてください。@@html:<br>@@
+BlenderのDecimate(ポリゴン数削減)モディファイアがなかなか優秀なので、カーブをメッシュ化したあとに使ってみるのも良いかもしれません。@@html:<br>@@
+あとは房ごとにBoolean(ブーリアン、メッシュの統合のこと)を実行しても減るでしょう。@@html:<br>@@
+どの角度からも見えないポリゴンを削除する機能を実装したかったのですが、許容できない計算時間になったので断念しました、自分は手動でやってます。

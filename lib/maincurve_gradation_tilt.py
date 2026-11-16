@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Originally licensed under Apache-2.0: Copyright (C) 2017-2021 saidenka, relarar, Taremin and contributors
+# Modified by Azlle in 2026 for Blender 5.2 compatibility. See COPYRIGHT for details.
 import bpy
 import math
 import mathutils
@@ -25,9 +28,9 @@ class ahs_maincurve_gradation_tilt(bpy.types.Operator):
 
     items = [
         ('ABSOLUTE', "絶対", "", 'PREFERENCES', 1),
-        ('RELATIVE', "相対", "", 'ZOOMIN', 2),
+        ('RELATIVE', "相対", "", 'ADD', 2),
     ]
-    mode = bpy.props.EnumProperty(items=items, name="モード", default='ABSOLUTE')
+    mode: bpy.props.EnumProperty(items=items, name="モード", default='ABSOLUTE')
 
     @classmethod
     def poll(cls, context):

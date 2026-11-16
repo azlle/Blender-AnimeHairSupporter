@@ -1,4 +1,7 @@
-﻿# アドオンを読み込む時に最初にこのファイルが読み込まれます
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Originally licensed under Apache-2.0: Copyright (C) 2017-2021 saidenka, relarar, Taremin and contributors
+# Modified by Azlle in 2026 for Blender 5.2 compatibility. See COPYRIGHT for details.
+# アドオンを読み込む時に最初にこのファイルが読み込まれます
 import importlib
 import inspect
 import sys
@@ -7,14 +10,14 @@ import bpy
 # アドオン情報
 bl_info = {
     'name': "Anime Hair Supporter",
-    'author': "saidenka, Taremin",
-    'version': (1, 0, 4),
-    'blender': (2, 80, 0),
+    'author': "saidenka, Taremin, Azlle",
+    'version': (26, 11, 0),
+    'blender': (5, 2, 0),
     'location': "3Dビュー > オブジェクトモード > サイドバー > ツール > アニメ髪支援パネル",
     'description': "",
     'warning': "",
-    'wiki_url': "https://github.com/saidenka/Blender-AnimeHairSupporter",
-    'tracker_url': "https://github.com/saidenka/Blender-AnimeHairSupporter",
+    'doc_url': "https://github.com/azlle/Blender-AnimeHairSupporter",
+    'tracker_url': "https://github.com/azlle/Blender-AnimeHairSupporter/issues",
     'category': "Tools"
 }
 
@@ -76,12 +79,11 @@ def register():
 
 # プラグインをアンインストールしたときの処理
 def unregister():
-    from pathlib import Path
-    if bpy.context.scene.get('ahs_props'):
-        del bpy.context.scene['ahs_props']
+    # Blender 5.0 以降、bpy.props で定義したプロパティは辞書アクセス (scene['ahs_props']) できないため
+    # プロパティ定義そのものを削除する
+    del bpy.types.Scene.ahs_props
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
-    Path(__file__).touch()
 
 
 # 最初に実行される
